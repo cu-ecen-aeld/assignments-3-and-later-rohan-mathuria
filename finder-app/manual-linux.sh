@@ -94,9 +94,9 @@ ${CROSS_COMPILE}readelf -a ${OUTDIR}/rootfs/bin/busybox | grep "Shared library"
 # TODO: Add library dependencies to rootfs
 echo "Copying libraries to rootfs/lib64/"
 cp ${SYSROOT}/lib/ld-linux-aarch64.so.1 ${OUTDIR}/rootfs/lib/
-cp ${SYSROOT}/lib64/libc.so.6 ${OUTDIR}/rootfs/lib64/
-cp ${SYSROOT}/lib64/libm.so.6 ${OUTDIR}/rootfs/lib64/
-cp ${SYSROOT}/lib64/libresolv.so.2 ${OUTDIR}/rootfs/lib64/
+cp ${SYSROOT}/lib64/libc.so.6           ${OUTDIR}/rootfs/lib64/
+cp ${SYSROOT}/lib64/libm.so.6           ${OUTDIR}/rootfs/lib64/
+cp ${SYSROOT}/lib64/libresolv.so.2      ${OUTDIR}/rootfs/lib64/
 
 # TODO: Make device nodes
 # mknod <name> <type> <major> <minor>
@@ -106,8 +106,7 @@ sudo mknod -m 666 ${OUTDIR}/rootfs/dev/console c 5 1
 
 # TODO: Clean and build the writer utility
 echo "Copying writer utility to rootfs/home/"
-cp /home/user/work/Linux_System_Programming_and_Introduction_to_Buildroot/assignment-rohan-mathuria/finder-app/writer.c \
-    ${OUTDIR}/rootfs/home/
+cp ${FINDER_APP_DIR}/writer.c ${OUTDIR}/rootfs/home/
 echo "Cross-compiling writer.c for target"
 cd ${OUTDIR}/rootfs/home
 ${CROSS_COMPILE}gcc -Wall -c writer.c -o writer.o
@@ -117,16 +116,11 @@ rm -rvf writer.o
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
 echo "Copy the finder related stuff to rootfs/home/"
-cp /home/user/work/Linux_System_Programming_and_Introduction_to_Buildroot/assignment-rohan-mathuria/finder-app/conf/assignment.txt \
-    ${OUTDIR}/rootfs/home/
-cp /home/user/work/Linux_System_Programming_and_Introduction_to_Buildroot/assignment-rohan-mathuria/finder-app/conf/username.txt \
-    ${OUTDIR}/rootfs/home/
-cp /home/user/work/Linux_System_Programming_and_Introduction_to_Buildroot/assignment-rohan-mathuria/finder-app/finder.sh \
-    ${OUTDIR}/rootfs/home/
-cp /home/user/work/Linux_System_Programming_and_Introduction_to_Buildroot/assignment-rohan-mathuria/finder-app/finder-test.sh \
-    ${OUTDIR}/rootfs/home/
-cp /home/user/work/Linux_System_Programming_and_Introduction_to_Buildroot/assignment-rohan-mathuria/finder-app/autorun-qemu.sh \
-    ${OUTDIR}/rootfs/home/
+cp ${FINDER_APP_DIR}/conf/assignment.txt    ${OUTDIR}/rootfs/home/
+cp ${FINDER_APP_DIR}/conf/username.txt      ${OUTDIR}/rootfs/home/
+cp ${FINDER_APP_DIR}/finder.sh              ${OUTDIR}/rootfs/home/
+cp ${FINDER_APP_DIR}/finder-test.sh         ${OUTDIR}/rootfs/home/
+cp ${FINDER_APP_DIR}/autorun-qemu.sh        ${OUTDIR}/rootfs/home/
 
 # TODO: Chown the root directory
 sudo chown -R root:root ${OUTDIR}/rootfs
@@ -139,3 +133,4 @@ cd ${OUTDIR}
 gzip -f initramfs.cpio
 
 echo "END!"
+
